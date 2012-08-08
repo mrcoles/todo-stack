@@ -1,0 +1,195 @@
+
+@box-dark: #118822;
+@box-light: lighten(@box-dark, 40%);
+@box-active-bg: #fff;
+@active-text: #333c33;
+
+@done-box-dark: #111;
+@done-box-light: lighten(@done-box-dark, 40%);
+
+html,body,div,p,h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
+html, body { height: 100%; }
+html { background: #fff; }
+
+body, input, textarea {
+    font: normal 14px/20px Helvetica,Arial,sans-serif;
+    color: #333;
+}
+
+input, textarea { color: @active-text; }
+
+#header .inner,
+#content .inner,
+#under .inner {
+    position: relative;
+    width: 600px;
+    margin: 0 auto;
+    padding: 0 5px;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: 600px;
+    background: #999;
+    background-color: #2c2c2c;
+    background-image: -moz-linear-gradient(center top , #333333, #222222);
+    background-repeat: repeat-x;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+    min-height: 40px;
+    z-index: 1001;
+
+    .inner { overflow: hidden; }
+
+    h1,
+    a.add {
+        font-size: 24px;
+        line-height: 40px;
+        color: #f9f9f9;
+        text-shadow: -1px -1px 0 rgba(0, 0, 0, .75);
+    }
+
+    h1 { float: left; }
+
+    a.add {
+        float: right;
+        /*margin-right: 5px; /* ssh don't tell anyone I'm adding margin-right on a float right */
+        text-decoration: none;
+        font-weight: bolder;
+        width: 60px;
+        text-align: center;
+        border-radius: 4px;
+        background: #333;
+        background: rgba(255, 255, 255, .1);
+
+        &:focus {
+            background: #555;
+            background: rgba(255, 255, 255, .25);
+            outline: none;
+        }
+    }
+}
+
+
+#content {
+    position: relative;
+    min-height: 100%;
+
+    .inner {
+        margin-top: 40px;
+        padding-top: 20px;
+    }
+}
+
+#under {
+    border-top: 2px solid #000;
+    padding: 18px 0 20px;
+    background-color: #2c2c2c;
+    color: #f9f9f9;
+}
+
+@box-font-size: 20px;
+@box-line-height: 40px;
+
+.box {
+    position: relative;
+    border: 4px solid @box-dark;
+    padding: 6px 6px 6px 11px;
+    margin: 0 0 20px;
+    min-height: 40px;
+    background: @box-light;
+    color: @box-dark;
+    text-align: center;
+    border-radius: 10px;
+
+    font-size: @box-font-size;
+    line-height: @box-line-height;
+
+    overflow: hidden;
+    zoom: 1;
+
+    &>div { float: left; position: relative; }
+
+    .num {
+        margin: 5px 25px 0 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        font-size: 20px;
+        line-height: 30px;
+        background: @box-dark;
+        color: @box-light;
+    }
+
+    .text {
+        width: 480px;
+        min-height: 40px;
+        text-align: left;
+    }
+
+    .edit {
+        display: none;
+        position: relative;
+        float: left;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        width: 460px;
+        font-size: @box-font-size;
+        line-height: @box-line-height;
+        height: @box-line-height;
+        background: @box-active-bg;
+    }
+
+    &.selected {
+        background: @box-active-bg;
+    }
+
+    &.editing {
+        background: @box-active-bg;
+
+        .edit { display: block; }
+        .text { display: none; }
+    }
+
+    .pop {
+        float: right;
+        margin: 2px 0;
+        width: @box-line-height - 4;
+        line-height: @box-line-height - 4;
+        text-align: center;
+        text-decoration: none;
+        color: @box-dark;
+        border-radius: 10px;
+
+        &:hover,
+        &:focus {
+            color: @box-light;
+            background: @box-dark;
+            outline: none;
+        }
+    }
+}
+
+#under .box {
+    border-color: @done-box-dark;
+    background: @done-box-light;
+    color: @done-box-dark;
+
+    .num {
+        background: @done-box-dark;
+        color: @done-box-light;
+    }
+
+    .pop {
+        color: @done-box-dark;
+
+        &:hover,
+        &:focus {
+            color: @done-box-light;
+            background: @done-box-dark;
+        }
+    }
+}
