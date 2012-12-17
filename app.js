@@ -6,6 +6,7 @@
 // http://www.quora.com/What-are-some-good-resources-for-Backbone-js
 
 function log() {
+    return;
     try {
         console.log.apply(console, arguments);
     } catch(e) {}
