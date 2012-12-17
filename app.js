@@ -1,11 +1,16 @@
-// READ THIS BEFORE WRITING ANY MORE CODE: http://documentcloud.github.com/backbone/docs/todos.html
-// http://documentcloud.github.com/backbone/examples/todos/index.html
 
-// other examples:
+// backbone examples:
+// http://documentcloud.github.com/backbone/docs/todos.html
+// http://documentcloud.github.com/backbone/examples/todos/index.html
 // http://coenraets.org/blog/2011/12/backbone-js-wine-cellar-tutorial-part-1-getting-started/
 // http://www.quora.com/What-are-some-good-resources-for-Backbone-js
 
-//TODO - figure out how to render list in reverse! :'(
+function log() {
+    try {
+        console.log.apply(console, arguments);
+    } catch(e) {}
+}
+
 
 var Task = Backbone.Model.extend({
     defaults: function() {
@@ -16,12 +21,12 @@ var Task = Backbone.Model.extend({
         };
     },
     initialize: function() {
-        console.log('[init] Task', this.get('i')); //REM
+        log('[init] Task', this.get('i'));
         // if (!this.get('text')) {
         //     this.set({'text': this.defaults.text});
         // }
         this.bind('change:text', function() {
-            console.log('[change:text] now: ' + this.get('text'));
+            log('[change:text] now: ' + this.get('text'));
         });
     },
     toggle: function() {
@@ -56,17 +61,17 @@ var TaskList = Backbone.Collection.extend({
     },
 
     comparator: function(task1, task2) {
-        console.log('task', task1, 'i', task1.get('i')); //REM
+        log('task', task1, 'i', task1.get('i'));
         return task1.get('i') - task2.get('i');
     },
 
     initialize: function() {
-        console.log('[init] TaskList');
+        log('[init] TaskList');
         this.bind('remove', this.onRemove, this);
     },
 
     onRemove: function() {
-        console.log('onRemove!', this); //REM
+        log('onRemove!', this);
         _.each(this.models, function(model, i) {
             model.set('i', i+1);
         });
@@ -128,7 +133,7 @@ var TaskView = Backbone.View.extend({
     },
 
     close: function(e, wasEscape) {
-        console.log("[CLOSE]", wasEscape); //REM
+        log("[CLOSE]", wasEscape);
         if (!wasEscape || !this.model.get('text')) {
             var value = this.$input.val();
             if (!value) this.clear();
@@ -143,14 +148,20 @@ var TaskView = Backbone.View.extend({
     },
 
     clear: function() {
-        $('#under>.inner').prepend(this.$el.parent().html());
+        log('[TaskView.clear]');
+        if (this.model.get('text')) {
+            $('<div>', {
+                'class': 'box',
+                html: this.$el.html()
+            }).prependTo('#under>.inner');
+        }
         this.model.clear();
     }
 });
 
 
 var AppView = Backbone.View.extend({
-    el: $('body'), //TODO - I have el here and this.$el in initialize... dupes?
+    el: $('body')[0],
 
     events: {
         'click a.add': 'addNew',
@@ -159,10 +170,6 @@ var AppView = Backbone.View.extend({
     },
 
     initialize: function() {
-        this.$add = $('#header').find('a.add');
-        this.$el = $('body');
-        //TODO - #pop-all, #clear-inactive
-
         tasks.bind('add', this.addOne, this); //TODO - can these be chained?
         tasks.bind('reset', this.addAll, this);
         tasks.bind('change', this.render, this);
@@ -171,11 +178,16 @@ var AppView = Backbone.View.extend({
 
         var self = this, $tasks = self.$('#tasks');
         function next(prev) {
-            var $selected = $tasks.find('.box.selected').removeClass('selected').first();
-            ($selected.length ? $selected[prev?'prev':'next']('.box') : $tasks.find('.box').first()).addClass('selected');
+            var $selected = $tasks
+                .find('.box.selected')
+                .removeClass('selected')
+                .first();
+            ($selected.length ?
+             $selected[prev?'prev':'next']('.box') :
+             $tasks.find('.box').first()).addClass('selected');
         }
 
-        //TODO - feels like I'm doing it wrong...
+        // key events
         var keyevents,
             helpTemplate = _.template($('#template-help').html());
 
@@ -191,7 +203,6 @@ var AppView = Backbone.View.extend({
         function help() {
             if (!hideHelp()) {
                 var html = helpTemplate({keyevents: keyevents});
-                console.log('HTML', html); //REM
                 $('body').append(html);
             }
         }
@@ -254,41 +265,42 @@ var AppView = Backbone.View.extend({
         var numActive = tasks.active().length,
             numInactive = tasks.inactive().length;
 
-        console.log('[APPVIEW.RENDER]'); //REM
+        log('[APPVIEW.RENDER]');
 
         //tasks.render();
 
         var numModels = tasks.models.length;
         _.each(tasks.models, function(model, i) {
             var mI = model.get('i');
-            console.log('model', mI, i, model); //REM
+            log('model', mI, i, model);
         });
 
         if (tasks.length) {
-            //TODO
+            $('#add-helper').hide();
         } else {
-            //TODO
+            $('#add-helper').show();
         }
     },
 
-    // updateNums: function() {
-    //     _.each([tasks.active(), tasks.inactive()], function(tasks) {
-    //         _.each(tasks, function(x, i) { x.save({i: i}); });
-    //     });
-    // },
-
-    addOne: function(task) {
-        console.log('[APPVIEW.ADDONE]', task, 'PLUCK', tasks.pluck('i')); //REM
+    addOne: function(task, i) {
+        log('[APPVIEW.ADDONE]', task, i, 'PLUCK', tasks.pluck('i'));
+        if (typeof(i) == 'number' && task.get('i') != i) {
+            task.set('i', i);
+        }
         var view = new TaskView({model: task});
         this.$('#tasks').prepend(view.render().el);
     },
 
     addAll: function() {
-        tasks.each(this.addOne);
+        log('[APPVIEW.ADDALL]');
+        var self = this;
+        tasks.each(function(task, i) {
+            self.addOne(task, i+1);
+        });
     },
 
     addNew: function(e) {
-        console.log('[APPVIEW.ADDNEW]', e); //REM
+        log('[APPVIEW.ADDNEW]', e);
         window.scrollTo(0, 0);
         var task = tasks.create();
         task.trigger('edit');
@@ -302,7 +314,10 @@ var AppView = Backbone.View.extend({
     },
 
     popAll: function() {
-        tasks.each(function(task) { task.save({'active': false}); });
+        log('[AppView.popAll]');
+        tasks.each(function(task) {
+            task.save({'active': false});
+        });
     }
 });
 

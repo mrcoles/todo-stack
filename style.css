@@ -23,7 +23,8 @@ input,textarea{color:#333c33;}
 .box.editing .text{display:none;}
 .box .pop{float:right;margin:2px 0;width:36px;line-height:36px;text-align:center;text-decoration:none;color:#118822;border-radius:10px;}.box .pop:hover,.box .pop:focus{color:#77ee88;background:#118822;outline:none;}
 #under .box{border-color:#111111;background:#777777;color:#111111;}#under .box .num{background:#111111;color:#777777;}
-#under .box .pop{color:#111111;}#under .box .pop:hover,#under .box .pop:focus{color:#777777;background:#111111;}
+#under .box .pop{display:none;color:#111111;}#under .box .pop:hover,#under .box .pop:focus{color:#777777;background:#111111;}
 .modal{position:fixed;top:60px;left:50%;width:400px;margin-left:-200px;z-index:10;background:#000;background:rgba(0, 0, 0, 0.75);border-radius:6px;padding:20px;color:#fff;}.modal dl{overflow:hidden;zoom:1;}
 .modal dt,.modal dd{float:left;width:340px;margin:0 0 20px;}
 .modal dt{clear:left;width:60px;font-weight:bold;}
+.helper{position:relative;padding-right:65px;margin-right:14px;text-align:right;background:transparent url(arrow.png) scroll no-repeat right top;color:#cd8000;font-family:georgia, serif;font-size:21px;line-height:40px;padding-top:62px;}
