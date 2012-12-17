@@ -30,4 +30,4 @@ input,textarea{color:#333c33;}
 .modal{position:fixed;top:60px;left:50%;width:400px;margin-left:-200px;z-index:10;background:#000;background:rgba(0, 0, 0, 0.75);border-radius:6px;padding:20px;color:#fff;}.modal dl{overflow:hidden;zoom:1;}
 .modal dt,.modal dd{float:left;width:340px;margin:0 0 20px;}
 .modal dt{clear:left;width:60px;font-weight:bold;}
-.helper{position:relative;padding-right:65px;margin-right:14px;text-align:right;background:transparent url(arrow.png) scroll no-repeat right top;color:#cd8000;font-family:georgia, serif;font-size:21px;line-height:40px;padding-top:62px;}
+.helper{position:relative;height:100px;margin-right:10px;text-indent:110%;white-space:nowrap;overflow:hidden;background:transparent url(add-a-task.png) scroll no-repeat right top;}
