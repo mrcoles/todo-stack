@@ -4,7 +4,7 @@ html,body{height:100%;}
 html{background:#fff;}
 body,input,textarea{font-weight:normal;font-size:14px;line-height:20px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#333;}
 input,textarea{color:#333c33;}
-::-webkit-input-placeholder{color:#999;}
+::-webkit-input-placeholder{color:#999;line-height:40px;}
 :-moz-placeholder{color:#999;}
 :-ms-input-placeholder{color:#999;}
 #header .inner,#content .inner,#under .inner{position:relative;width:600px;margin:0 auto;padding:0 5px;}
