@@ -7,16 +7,28 @@
 @done-box-dark: #111;
 @done-box-light: lighten(@done-box-dark, 40%);
 
+@font-size: 14px;
+@line-height: 20px;
+
 html,body,div,p,h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
 html, body { height: 100%; }
 html { background: #fff; }
 
 body, input, textarea {
-    font: normal 14px/20px Helvetica,Arial,sans-serif;
+    font-weight: normal;
+    font-size: @font-size;
+    line-height: @line-height;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
     color: #333;
 }
 
-input, textarea { color: @active-text; }
+input, textarea {
+    color: @active-text;
+}
+
+::-webkit-input-placeholder { color: #999; }
+:-moz-placeholder { color: #999; }
+:-ms-input-placeholder{ color: #999; }
 
 #header .inner,
 #content .inner,
@@ -193,3 +205,35 @@ input, textarea { color: @active-text; }
         }
     }
 }
+
+.modal {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+    z-index: 10;
+    background: #000;
+    background: rgba(0, 0, 0, .75);
+    border-radius: 6px;
+    padding: 20px;
+    color: #fff;
+
+    dl {
+        overflow: hidden;
+        zoom: 1;
+    }
+
+    dt, dd {
+        float: left;
+        width: 340px;
+        margin: 0 0 20px;
+    }
+
+    dt {
+        clear: left;
+        width: 60px;
+        font-weight: bold;
+    }
+}
+

@@ -127,19 +127,19 @@ var TaskView = Backbone.View.extend({
         this.$el.addClass('selected'); //TODO - i'm doing this wrong? DRY
     },
 
-    close: function(noSave) {
-        console.log("[CLOSE]", noSave); //REM
-        if (!noSave) {
+    close: function(e, wasEscape) {
+        console.log("[CLOSE]", wasEscape); //REM
+        if (!wasEscape || !this.model.get('text')) {
             var value = this.$input.val();
             if (!value) this.clear();
-            this.model.save({text: value});
+            else this.model.save({text: value});
         }
         this.$el.removeClass('editing');
     },
 
     updateOnEnterOrEsc: function(e) {
-        if (e.keyCode == 13) this.close();
-        else if (e.keyCode == 27) this.close(true);
+        if (e.keyCode == 13) this.close(e); // enter
+        else if (e.keyCode == 27) this.close(e, true); // esc
     },
 
     clear: function() {
@@ -176,18 +176,78 @@ var AppView = Backbone.View.extend({
         }
 
         //TODO - feels like I'm doing it wrong...
-        $(document)
-            .bind('keyup', 'a', function() { self.addNew(); })
-            .bind('keypress', 'j', function() { next(); })
-            .bind('keypress', 'k', function() { next(true); })
-            .bind('keyup', 'e', function() {
-                $tasks.find('.box.selected').find('div.text').click();
-            })
-            .bind('keyup', '#', function() {
-                var $cur = $tasks.find('.box.selected');
-                next();
-                $cur.find('a.pop').click();
-            });
+        var keyevents,
+            helpTemplate = _.template($('#template-help').html());
+
+        function hideHelp() {
+            var m = document.getElementById('hotkey-modal');
+            if (m) {
+                $(m).remove();
+                return true;
+            }
+            return false;
+        }
+
+        function help() {
+            if (!hideHelp()) {
+                var html = helpTemplate({keyevents: keyevents});
+                console.log('HTML', html); //REM
+                $('body').append(html);
+            }
+        }
+
+        keyevents = [
+            {
+                evt: 'keyup',
+                key: 'a',
+                fn: function() { self.addNew(); },
+                help: 'Add a new task'
+            },
+            {
+                evt: 'keypress',
+                key: 'j',
+                fn: function() { next(); },
+                help: 'Select the next task'
+            },
+            {
+                evt: 'keypress',
+                key: 'k',
+                fn: function() { next(true); },
+                help: 'Select the previous task'
+            },
+            {
+                evt: 'keyup',
+                key: 'e',
+                fn: function() {
+                    $tasks.find('.box.selected').find('div.text').click();
+                },
+                help: 'Edit the selected task'
+            },
+            {
+                evt: 'keyup',
+                key: '#',
+                fn: function() {
+                    var $cur = $tasks.find('.box.selected');
+                    next();
+                    $cur.find('a.pop').click();
+                },
+                help: 'Mark the current task as complete'
+            },
+            {
+                evt: 'keyup',
+                key: 'shift+/',
+                fn: help,
+                help: 'Show the help modal'
+            }
+        ];
+
+        var $doc = $(document);
+
+        _.each(keyevents, function(obj) {
+            $doc.bind(obj.evt, obj.key, obj.fn);
+        });
+
+        $doc.bind('keyup', 'esc', hideHelp);
     },
 
     render: function() {
