@@ -247,7 +247,8 @@ var AppView = Backbone.View.extend({
             },
             {
                 evt: 'keyup',
-                key: 'shift+/',
+                key: '?',
+                exactKey: 'shift+/',
                 fn: help,
                 help: 'Show the help modal'
             }
@@ -256,7 +257,7 @@ var AppView = Backbone.View.extend({
         var $doc = $(document);
 
         _.each(keyevents, function(obj) {
-            $doc.bind(obj.evt, obj.key, obj.fn);
+            $doc.bind(obj.evt, obj.exactKey || obj.key, obj.fn);
         });
 
         $doc.bind('keyup', 'esc', hideHelp);

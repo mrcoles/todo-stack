@@ -10,6 +10,11 @@
 @font-size: 14px;
 @line-height: 20px;
 
+@box-font-size: 20px;
+@box-line-height: 40px;
+@box-text-line-height: 30px;
+@box-text-vertical-margin: (@box-line-height - @box-text-line-height) / 2;
+
 html,body,div,p,h1,h2,h3,h4,h5,h6{margin:0; padding:0;}
 html, body { height: 100%; }
 html { background: #fff; }
@@ -34,7 +39,8 @@ input, textarea {
 #content .inner,
 #under .inner {
     position: relative;
-    width: 600px;
+    max-width: 600px;
+    min-width: 320px;
     margin: 0 auto;
     padding: 0 5px;
 }
@@ -44,7 +50,6 @@ input, textarea {
     top: 0;
     left: 0;
     width: 100%;
-    min-width: 600px;
     background: #999;
     background-color: #2c2c2c;
     background-image: -moz-linear-gradient(center top , #333333, #222222);
@@ -58,7 +63,7 @@ input, textarea {
     h1,
     a.add {
         font-size: 24px;
-        line-height: 40px;
+        line-height: @box-line-height;
         color: #f9f9f9;
         text-shadow: -1px -1px 0 rgba(0, 0, 0, .75);
     }
@@ -67,7 +72,6 @@ input, textarea {
 
     a.add {
         float: right;
-        /*margin-right: 5px; /* ssh don't tell anyone I'm adding margin-right on a float right */
         text-decoration: none;
         font-weight: bolder;
         width: 60px;
@@ -90,8 +94,8 @@ input, textarea {
     min-height: 100%;
 
     .inner {
-        margin-top: 40px;
-        padding-top: 20px;
+        //margin-top: 40px; <- margin messes with the min-height 100%
+        padding-top: 60px;
     }
 }
 
@@ -106,22 +110,20 @@ input, textarea {
     }
 }
 
-@box-font-size: 20px;
-@box-line-height: 40px;
-
 .clr {
     overflow: hidden;
     zoom: 1;
 }
 .left { float: left; }
 .right { float: right; }
+.br { margin-bottom: @line-height; }
 
 .box {
     position: relative;
     border: 4px solid @box-dark;
     padding: 6px 6px 6px 11px;
     margin: 0 0 20px;
-    min-height: 40px;
+    min-height: @box-line-height;
     background: @box-light;
     color: @box-dark;
     text-align: center;
@@ -133,9 +135,10 @@ input, textarea {
     overflow: hidden;
     zoom: 1;
 
-    &>div { float: left; position: relative; }
+    &>div { position: relative; }
 
     .num {
+        float: left;
         margin: 5px 25px 0 0;
         width: 30px;
         height: 30px;
@@ -146,23 +149,28 @@ input, textarea {
         color: @box-light;
     }
 
+    .edit-wrap,
     .text {
-        width: 480px;
-        min-height: 40px;
+        position: relative;
+        margin: @box-text-vertical-margin 40px @box-text-vertical-margin 55px;
+        line-height: @box-text-line-height;
+        min-height: @box-text-line-height;
         text-align: left;
     }
 
-    .edit {
+    .edit-wrap {
         display: none;
+    }
+
+    .edit {
         position: relative;
-        float: left;
         border: 0;
         padding: 0;
         margin: 0;
-        width: 460px;
+        width: 100%;
         font-size: @box-font-size;
-        line-height: @box-line-height;
-        height: @box-line-height;
+        line-height: @box-text-line-height;
+        height: @box-text-line-height;
         background: @box-active-bg;
     }
 
@@ -173,13 +181,14 @@ input, textarea {
     &.editing {
         background: @box-active-bg;
 
-        .edit { display: block; }
+        .edit-wrap { display: block; }
         .text { display: none; }
     }
 
     .pop {
-        float: right;
-        margin: 2px 0;
+        position: absolute;
+        top: 8px;
+        right: 6px;
         width: @box-line-height - 4;
         line-height: @box-line-height - 4;
         text-align: center;
@@ -232,6 +241,14 @@ input, textarea {
     padding: 20px;
     color: #fff;
 
+    a.close {
+        float: right;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        text-decoration: none;
+    }
+
     dl {
         overflow: hidden;
         zoom: 1;
@@ -245,7 +262,7 @@ input, textarea {
 
     dt {
         clear: left;
-        width: 60px;
+        width: 30px;
         font-weight: bold;
     }
 }

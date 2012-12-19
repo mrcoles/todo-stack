@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset=utf-8>
-        <title>Stack!</title>
+        <title>//TODO Stack</title>
         <link rel="stylesheet" href="style.css">
         <script src="lib/modernizr-2.5.3.js"></script>
     </head>
@@ -13,21 +13,19 @@
         </div></div>
         <div id="content"><div class="inner" id="tasks">
             <div id="add-helper" class="helper">add a task</div>
+
             <!--
-            <div class="box">
+            <div class="box active selected editing">
                 <div class="num">2</div>
-                <div class="text">Do one thing</div>
-                <a class="pop" href="#" onclick="return false">X</a>
+                <div class="text" tabindex="0">eeasdfasdf</div>
+                <div class="edit-wrap"><input class="edit" type="text" placeholder="enter a new task..." value="eeasdfasdf"></div>
+                <a class="pop" href="#" onclick="return false" tabindex="0">X</a>
             </div>
-            <div class="box">
+            <div class="box active">
                 <div class="num">1</div>
-                <div class="text">Do another thing</div>
-                <a class="pop" href="#" onclick="return false">X</a>
-            </div>
-            <div class="box">
-                <div class="num">0</div>
-                <div class="text">Do this now!</div>
-                <a class="pop" href="#" onclick="return false">X</a>
+                <div class="text" tabindex="0">fun</div>
+                <div class="edit-wrap"><input class="edit" type="text" placeholder="enter a new task..." value="fun"></div>
+                <a class="pop" href="#" onclick="return false" tabindex="0">X</a>
             </div>
             -->
         </div></div>
@@ -41,7 +39,9 @@
             -->
             <div class="clr">
                 <br>
-                <p class="left">Type “shift + /” to see keyboard shortcuts.</p>
+                <p class="left br">
+                    Type “?” to see keyboard shortcuts.
+                </p>
                 <p class="right">
                     made by <a href="http://mrcoles.com">peter coles</a> /
                     <a href="https://twitter.com/lethys">twit</a> /
@@ -53,12 +53,13 @@
         <script id="template-box" type="text/template">
             <div class="num"><%- i %></div>
             <div class="text" tabindex="0"><%- text %></div>
-            <input class="edit" type="text" placeholder="enter a new task..." value="<%= text %>" />
+            <div class="edit-wrap"><input class="edit" type="text" placeholder="enter a new task..." value="<%= text %>" /></div>
             <a class="pop" href="#" onclick="return false" tabindex="0">X</a>
         </script>
 
         <script id="template-help" type="text/template">
             <div id="hotkey-modal" class="modal">
+                <a class="close" href="#" onclick="$(this).closest('#hotkey-modal').remove();return false">x</a>
                 <h3>Hotkeys</h3>
                 <dl>
                 <% _.each(keyevents, function(obj) { %>
