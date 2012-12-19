@@ -219,7 +219,13 @@ var AppView = Backbone.View.extend({
             {
                 evt: 'keyup',
                 key: 'a',
-                fn: function() { self.addNew(); },
+                fn: function(e) {
+                    // note - there's a mysterious bug where
+                    // this gets triggered sometimes on firefox
+                    // on mac osx when using cmd+tab to switch
+                    // applications...
+                    self.addNew();
+                },
                 help: 'Add a new task'
             },
             {
