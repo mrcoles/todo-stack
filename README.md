@@ -1,10 +1,11 @@
-
 TODO Stack
 ==========
 
 Instead of a TODO list, this is a TODO stack. It is intended for multi-tasking during the work day, and keeping track of the stack of things that you're working on as more and more interruptions keep happening.
 
-It is built using backbone.js and runs completely client-side.
+It is built using backbone.js and runs completely client-side using local storage.
+
+Try it out: [http://mrcoles.com/todo/](http://mrcoles.com/todo/)
 
 ### Keyboard shortcuts
 
@@ -13,4 +14,5 @@ It is built using backbone.js and runs completely client-side.
 *   __k__ - select previous task
 *   __e__ - edit selected task
 *   __#__ - mark task ask completed
+*   __?__ - view the keyboard shortcuts
 
