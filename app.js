@@ -92,7 +92,9 @@ var TaskView = Backbone.View.extend({
         'keydown div.text': 'edit',
         'focus a.pop': 'popFocus',
         'keydown .edit': 'updateOnEnterOrEsc',
-        'blur .edit': 'close'
+        'blur .edit': 'close',
+        'makeSelected': 'makeSelected',
+        'hover': 'makeSelected'
     },
 
     initialize: function() {
@@ -124,13 +126,17 @@ var TaskView = Backbone.View.extend({
         }
     },
 
+    makeSelected: function() {
+        this.$el.siblings('.selected').removeClass('selected');
+        this.$el.addClass('selected');
+    },
+
     edit: function(e) {
         if (e && e.type != 'click' && e.keyCode != 13) return;
         this.$input.val(this.model.get('text'));
         this.$el.addClass('editing');
+        this.makeSelected();
         this.$input.focus().select();
-        this.$el.siblings('.selected').removeClass('selected'); //TODO - i'm doing this wrong? DRY
-        this.$el.addClass('selected'); //TODO - i'm doing this wrong? DRY
     },
 
     close: function(e, wasEscape) {
@@ -179,13 +185,14 @@ var AppView = Backbone.View.extend({
 
         var self = this, $tasks = self.$('#tasks');
         function next(prev) {
-            var $selected = $tasks
-                .find('.box.selected')
-                .removeClass('selected')
-                .first();
-            ($selected.length ?
-             $selected[prev?'prev':'next']('.box') :
-             $tasks.find('.box').first()).addClass('selected');
+            var $selected = $tasks.find('.box.selected').first(),
+                $new = ($selected.length ?
+                        $selected[prev?'prev':'next']('.box') :
+                        null);
+            if (!$new || !$new.size()) {
+                $new = $tasks.find('.box')[prev?'last':'first']();
+            }
+            $new.trigger('makeSelected');
         }
 
         // key events
