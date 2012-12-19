@@ -12,6 +12,7 @@
 
 @box-font-size: 20px;
 @box-line-height: 40px;
+
 @box-text-line-height: 30px;
 @box-text-vertical-margin: (@box-line-height - @box-text-line-height) / 2;
 
@@ -31,7 +32,7 @@ input, textarea {
     color: @active-text;
 }
 
-::-webkit-input-placeholder { color: #999; }
+::-webkit-input-placeholder { color: #999; line-height: @box-line-height; } //TODO - fix safari placeholder
 :-moz-placeholder { color: #999; }
 :-ms-input-placeholder{ color: #999; }
 
@@ -269,13 +270,10 @@ input, textarea {
 
 .helper {
     position: relative;
-    padding-right: 65px;
+	height: 100px;
     margin-right: 14px;
-    text-align: right;
-    background: transparent url(arrow.png) scroll no-repeat right top;
-    color: darken(#d78600, 2%);
-    font-family: georgia, serif;
-    font-size: @font-size * 1.5;
-    line-height: @line-height * 2;
-    padding-top: 90 - (@line-height * 1.4);
+	text-indent: 110%;
+	white-space: nowrap;
+	overflow: hidden;
+    background: transparent url(add-a-task.png) scroll no-repeat right top;
 }
