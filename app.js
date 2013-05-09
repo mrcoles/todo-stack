@@ -173,7 +173,8 @@ var AppView = Backbone.View.extend({
     events: {
         'click a.add': 'addNew',
         'click #clear-inactive': 'clearInactive',
-        'click #pop-all': 'popAll'
+        'click #pop-all': 'popAll',
+        'click #email-list': 'emailList'
     },
 
     initialize: function() {
@@ -333,6 +334,31 @@ var AppView = Backbone.View.extend({
         tasks.each(function(task) {
             task.save({'active': false});
         });
+    },
+
+    emailList: function(e) {
+        e.preventDefault();
+
+        // get tasks
+        var body = [];
+        var taskList = _.map(tasks.models, function(task) {
+            return task.get('text');
+        });
+        for (var i = taskList.length; i>0; i--) {
+            body.push(i + '. ' + taskList[i-1]);
+        }
+        body = ('\n' +
+                body.join('\n') +
+                '\n\n--\nhttp://mrcoles.com/todo');
+
+        // create query string
+        var qs = $.param({
+            body: body,
+            subject: document.title
+        }).replace(/\+/g, '%20');
+
+        var url = 'mailto:?' + qs;
+        window.location = url;
     }
 });
 
